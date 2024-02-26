@@ -1,5 +1,7 @@
 ﻿using LocalShop.Data;
+using LocalShop.Migrations;
 using LocalShop.Models;
+using LocalShop.NewViewModel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection.Metadata;
@@ -10,13 +12,13 @@ namespace LocalShop.Controllers
     public class DashBoardController : Controller
     {
         private static List<BlogType> _BlogTypes = new List<BlogType>();
-        private static List<Company> _companys = new List<Company>();
+        private static List<Company> _companies = new List<Company>();
         private readonly ApplicationDbContext _db;
         public DashBoardController(ApplicationDbContext db)
         {
             _db = db;
-            _companys.Add(new Company { Id = 1, Name = "nike" });
-            _companys.Add(new Company { Id = 2, Name = "adidas" });
+            _companies.Add(new Company { Id = 1, Name = "nike" });
+            _companies.Add(new Company { Id = 2, Name = "adidas" });
 
             _BlogTypes.Add(new BlogType { Id = 1, Name = "comedy" });
             _BlogTypes.Add(new BlogType { Id = 2, Name = "romantic" });
@@ -32,19 +34,33 @@ namespace LocalShop.Controllers
         #region AddProduct
         public IActionResult AddProduct()
         {
-            return View();
+            var co =_db.companies.ToList();
+            var ProductView = new ProductViewModel()
+            {
+                Company = co
+            };
+            return View(ProductView);
 
         }
         [HttpPost]
         public IActionResult AddProduct(Product product)
         {
+            var co = _db.companies.ToList();
+            var ProductView = new ProductViewModel()
+            {
+                Company = co
+            };
+            if (!ModelState.IsValid)
+            {
+                return View(ProductView);
+            }
             _db.products.Add(product);
             _db.SaveChanges();
             return RedirectToAction("Index");
 
         }
         #endregion
-
+          
         #region ViewProducts
         public IActionResult ViewProducts()
         {
@@ -94,12 +110,25 @@ namespace LocalShop.Controllers
         #region AddBlog
         public IActionResult AddBlog()
         {
-            return View();
+            var types=_db.blogTypes.ToList();
+            var BlogView = new BlogViewModel()
+            {
+                types = types
+            };
+            return View(BlogView);
         }
         [HttpPost]
         public IActionResult AddBlog(Blog blog)
         {
-
+            var types = _db.blogTypes.ToList();
+            var BlogView = new BlogViewModel()
+            {
+                types = types
+            };
+            if (!ModelState.IsValid)
+            {
+                return View(BlogView);
+            }
             _db.blogs.Add(blog);
             _db.SaveChanges();
             return RedirectToAction("index");
@@ -125,7 +154,7 @@ namespace LocalShop.Controllers
             Blog? blog = _db.blogs.FirstOrDefault(x => x.Id == id);
             _db.blogs.Remove(blog);
             _db.SaveChanges();
-            return RedirectToAction("GetAllDataBlogs");
+            return RedirectToAction("ViewBlogs");
         }
 
         #endregion

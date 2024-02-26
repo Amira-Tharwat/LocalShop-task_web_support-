@@ -1,4 +1,4 @@
-﻿@model Blog
+﻿@model BlogViewModel
 
 @{
     Layout = "_DashBoard";
@@ -15,73 +15,46 @@
         <div>
             <form method="post" asp-action="EditBlog" class="row">
                 <div class="mb-3">
-                    <label asp-for="Name" for="" class="form-label">Blog Title</label>
+                    <label asp-for="blog.Name" for="" class="form-label">Blog Title</label>
                     <input type="text"
-                           asp-for="Name"
-                           value="@Model.Name"
+                           asp-for="blog.Name"
+                           value="@Model.blog.Name"
                            class="form-control"
                            placeholder="" />
 
                 </div>
                 <div class="mb-3">
-                    <label asp-for="Description" for="" class="form-label">Blog Description</label>
+                    <label asp-for="blog.Description" for="" class="form-label">Blog Description</label>
                     <textarea type="text"
-                              asp-for="Description"
+                              asp-for="blog.Description"
                               class="form-control"
-                              placeholder="">@Model.Description</textarea>
+                              placeholder="">@Model.blog.Description</textarea>
                 </div>
                 <div class="mb-3">
-                    <label asp-for="AuthorName" for="" class="form-label">AuthorName</label>
+                    <label asp-for="blog.AuthorName" for="" class="form-label">AuthorName</label>
                     <textarea type="text"
-                              asp-for="AuthorName"
+                              asp-for="blog.AuthorName"
                               class="form-control"
-                              placeholder="">@Model.AuthorName</textarea>
+                              placeholder="">@Model.blog.AuthorName</textarea>
                 </div>
+               
 
                 <div class="mb-3 col-lg-6">
-                    <label asp-for="BlogTypeId" for="" class="form-label">BlogType</label>
+                    <label asp-for="blog.BlogTypeId" for="" class="form-label">BlogType</label>
                     <select class="form-select "
-                            asp-for="BlogTypeId">
+                            asp-for="blog.BlogTypeId">
                         @{
-                            if (Model.BlogTypeId == 1)
+                            foreach (var type in Model.types)
                             {
-                                <option >Select one</option>
-                                <option value="1" selected>comedy</option>
-                                <option value="2">romantic</option>
-                                <option value="3">horror</option>
-                                <option value="4">scientific</option>
-                            }
-                            else if (Model.BlogTypeId == 2)
-                            {
-                                <option >Select one</option>
-                                <option value="1">comedy</option>
-                                <option value="2" selected>romantic</option>
-                                <option value="3">horror</option>
-                                <option value="4">scientific</option>
-                            }
-                            else if (Model.BlogTypeId == 3)
-                            {
-                                <option >Select one</option>
-                                <option value="1">comedy</option>
-                                <option value="2">romantic</option>
-                                <option value="3" selected>horror</option>
-                                <option value="4">scientific</option>
-                            }
-                            else if (Model.BlogTypeId == 4)
-                            {
-                                <option >Select one</option>
-                                <option value="1">comedy</option>
-                                <option value="2">romantic</option>
-                                <option value="3">horror</option>
-                                <option value="4" selected>scientific</option>
-                            }
-                            else
-                            {
-                                <option selected>Select one</option>
-                                <option value="1">comedy</option>
-                                <option value="2">romantic</option>
-                                <option value="3">horror</option>
-                                <option value="4">scientific</option>
+                                int typeId = Model.blog.BlogTypeId;
+                                if (typeId == type.Id)
+                                {
+                                    <option value=@type.Id selected>@type.Name</option>
+                                }
+                                else
+                                {
+                                    <option value=@type.Id>@type.Name</option>
+                                }
 
                             }
                         }

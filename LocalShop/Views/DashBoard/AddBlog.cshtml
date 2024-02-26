@@ -1,4 +1,4 @@
-﻿@model Blog
+﻿@model BlogViewModel
 
 @{
     Layout = "_DashBoard";
@@ -15,37 +15,41 @@
         <div>
             <form method="post" asp-action="AddBlog" class="row">
                 <div class="mb-3">
-                    <label asp-for="Name" for="" class="form-label">Blog Title</label>
+                    <label asp-for="blog.Name" for="" class="form-label">Blog Title</label>
                     <input type="text"
-                           asp-for="Name"
+                           asp-for="blog.Name"
                            class="form-control"
-                           placeholder="" />
+                           placeholder="" /><span asp-validation-for="blog.Name" class="text-danger"></span>
 
                 </div>
                 <div class="mb-3">
-                    <label asp-for="Description" for="" class="form-label">Blog Description</label>
+                    <label asp-for="blog.Description" for="" class="form-label">Blog Description</label>
                     <textarea type="text"
-                              asp-for="Description"
+                              asp-for="blog.Description"
                               class="form-control"
-                              placeholder=""></textarea>
+                              placeholder=""></textarea><span asp-validation-for="blog.Description" class="text-danger"></span>
                 </div>
                 <div class="mb-3">
-                    <label asp-for="AuthorName" for="" class="form-label">AuthorName</label>
+                    <label asp-for="blog.AuthorName" for="" class="form-label">AuthorName</label>
                     <textarea type="text"
-                              asp-for="AuthorName"
+                              asp-for="blog.AuthorName"
                               class="form-control"
-                              placeholder=""></textarea>
+                              placeholder=""></textarea><span asp-validation-for="blog.AuthorName" class="text-danger"></span>
                 </div>
 
                 <div class="mb-3 col-lg-6">
-                    <label asp-for="BlogTypeId" for="" class="form-label">BlogType</label>
+                    <label asp-for="blog.BlogTypeId" for="" class="form-label">BlogType</label>
                     <select class="form-select "
-                            asp-for="BlogTypeId">
+                            asp-for="blog.BlogTypeId">
                         <option selected>Select one</option>
-                        <option value="1">comedy</option>
-                        <option value="2">romantic</option>
-                        <option value="3">horror</option>
-                        <option value="4">scientific</option>
+
+                        @{
+                            foreach (var type in Model.types)
+                            {
+                                <option value=@type.Id>@type.Name</option>
+                            }
+                        }
+                      
                     </select>
                 </div>
 
