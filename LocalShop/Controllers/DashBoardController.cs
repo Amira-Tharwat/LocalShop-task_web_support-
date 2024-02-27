@@ -85,13 +85,20 @@ namespace LocalShop.Controllers
         #region EditProduct
         public IActionResult EditProduct(int id)
         {
-            Product product = _db.products.FirstOrDefault(y => y.Id == id);
-            return View(product);
+            var coms = _db.companies.ToList();
+            var p = new ProductViewModel()
+            {
+                Company = coms
+            };
+            p.Product=_db.products.FirstOrDefault(y => y.Id == id);
+          
+            return View(p);
         }
         [HttpPost]
 
         public IActionResult EditProduct(Product product)
         {
+
             Product newProduct = _db.products.FirstOrDefault(x => x.Id == product.Id);
             newProduct.Name = product.Name;
             newProduct.Description = product.Description;
@@ -162,8 +169,14 @@ namespace LocalShop.Controllers
         #region EditBlog
         public IActionResult EditBlog(int id)
         {
-            Blog blog = _db.blogs.FirstOrDefault(b => b.Id == id);
-            return View(blog);
+            var types = _db.blogTypes.ToList();
+            var t = new BlogViewModel()
+            {
+                types = types
+            };
+            t.blog = _db.blogs.FirstOrDefault(y => y.Id == id);
+
+            return View(t);
         }
         [HttpPost]
         public IActionResult EditBlog(Blog blog)
