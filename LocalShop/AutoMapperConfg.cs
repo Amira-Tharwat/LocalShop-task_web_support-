@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using LocalShop.Migrations;
+using LocalShop.Models;
 using LocalShop.Models.DTO;
 
 namespace LocalShop
@@ -9,7 +10,7 @@ namespace LocalShop
         public AutoMapperConfg()
         { 
             CreateMap<product,ProductDTO>().ReverseMap();
-            CreateMap<BlogDTO,BlogDTO>().ReverseMap();
+            CreateMap<Blog,BlogDTO>().ReverseMap();
         }
     }
 }
